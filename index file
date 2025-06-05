@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website Content Extractor</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ff00;
+      font-weight: bold;
+      background: black;
+      overflow: hidden;
+    }
+
+    .binary-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .column {
+      position: absolute;
+      top: 0;
+      width: 20px;
+      animation: fall linear infinite;
+      color: #00ff00;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100%);
+      }
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+
+    .container {
+      position: relative;
+      padding: 20px;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 3rem;
+      font-weight: 900;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    }
+
+    input[type="url"],
+    button {
+      font-size: 1.2em;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px;
+    }
+
+    input[type="url"] {
+      width: 70%;
+      border: 1px solid #00ff00;
+      background: rgba(0, 0, 0, 0.7);
+      color: #00ff00;
+    }
+
+    button {
+      background: #004400;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      cursor: pointer;
+    }
+
+    .result-section {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    pre {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      color: #00ff00;
+      border-radius: 5px;
+    }
+
+    /* Spinner Styles */
+    .image-wrapper {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      z-index: 1000;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .spinner-ring {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 3px solid transparent;
+      border-top: 3px solid #00ff00;
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="binary-background" id="binary-background"></div>
+
+  <div class="container">
+    <h1>Website Content Extractor</h1>
+    <div class="input-section">
+      <input type="url" id="url-input" placeholder="Enter website URL (e.g., https://example.com)" required>
+      <button id="extract-btn">Extract Content</button>
+    </div>
+    <div id="status" class="status" style="display: none;"></div>
+    <div id="results" class="results" style="display: none;"></div>
+  </div>
+
+  <!-- Spinner and Image in Corner -->
+  <div class="image-wrapper">
+    <div class="spinner-ring"></div>
+    <img src="https://files.catbox.moe/h977eb.jpg" alt="User Image" />
+  </div>
+
+  <script>
+    // Binary animation generation
+    const binaryContainer = document.getElementById('binary-background');
+    const binaryChars = ['0', '1'];
+    const columnCount = Math.floor(window.innerWidth / 20);
+
+    for (let i = 0; i < columnCount; i++) {
+      const column = document.createElement('div');
+      column.classList.add('column');
+      column.style.left = `${i * 20}px`;
+      column.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      column.innerHTML = Array.from({ length: 30 }, () => binaryChars[Math.floor(Math.random() * 2)]).join('<br>');
+      binaryContainer.appendChild(column);
+    }
+
+    // Demo logic
+    document.getElementById('extract-btn').addEventListener('click', () => {
+      const status = document.getElementById('status');
+      status.textContent = "Extract button clicked (demo only)";
+      status.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
